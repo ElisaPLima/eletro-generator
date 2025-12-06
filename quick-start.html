@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Builder - Quick Start Guide</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+            background: #f9f9f9;
+        }
+        h1 { color: #8B0000; border-bottom: 3px solid #8B0000; padding-bottom: 0.5rem; }
+        h2 { color: #B22222; margin-top: 2rem; }
+        .feature-box {
+            background: white;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn {
+            display: inline-block;
+            background: #8B0000;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        .btn:hover { background: #6B0000; }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .shortcut {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 0.2rem;
+        }
+        ul { margin-left: 1.5rem; }
+    </style>
+</head>
+<body>
+    <h1>🫀 ECG Builder - Guia Rápido</h1>
+    
+    <p><strong>Bem-vindo ao ECG Builder!</strong> Uma ferramenta interativa para gerar eletrocardiogramas de 12 derivações com precisão médica, ideal para ensino e aprendizado.</p>
+    
+    <a href="index.html" class="btn">🚀 Abrir ECG Builder</a>
+    
+    <div class="feature-box">
+        <h2>✨ Recursos Principais</h2>
+        <ul>
+            <li><strong>12 Derivações Completas:</strong> D1, D2, D3, aVR, aVL, aVF, V1-V6</li>
+            <li><strong>Grade Médica Realista:</strong> Papel milimetrado rosa com escala 25mm/s e 10mm/mV</li>
+            <li><strong>Cálculo Automático de BPM:</strong> Detecção de picos R e frequência cardíaca</li>
+            <li><strong>Análise Automática:</strong> Interpretação completa do ECG com diagnósticos</li>
+            <li><strong>Templates Prontos:</strong> Padrões comuns pré-configurados</li>
+            <li><strong>Exportação:</strong> PDF vetorial e JPG alta resolução</li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>🎯 Como Usar</h2>
+        
+        <h3>1. Ajustar Parâmetros</h3>
+        <p>Use o painel lateral esquerdo para modificar:</p>
+        <ul>
+            <li><strong>Frequência Cardíaca:</strong> 30-200 bpm</li>
+            <li><strong>Intervalos:</strong> PR, QT, largura de P/QRS</li>
+            <li><strong>Amplitudes:</strong> P, QRS, T, ST, U</li>
+            <li><strong>Arritmias:</strong> FA, Flutter, TV, bloqueios AV</li>
+            <li><strong>Bloqueios de Ramo:</strong> BCRD, BCRE, hemibloqueios</li>
+            <li><strong>Patologias:</strong> IAM (várias localizações), HVE, HVD</li>
+        </ul>
+        
+        <h3>2. Usar Templates</h3>
+        <p>Clique nos botões na parte inferior do painel lateral:</p>
+        <ul>
+            <li><strong>ECG Normal:</strong> Padrão sinusal normal</li>
+            <li><strong>IAM Anterior:</strong> Supradesnivelamento de ST em V1-V4</li>
+            <li><strong>Fibrilação Atrial:</strong> Ausência de ondas P, RR irregular</li>
+            <li><strong>BCRE:</strong> QRS alargado com padrão típico</li>
+            <li><strong>HVE:</strong> Aumento de voltagem e padrão de sobrecarga</li>
+        </ul>
+        
+        <h3>3. Análise Automática</h3>
+        <p>Clique no botão <strong>"📊 Análise Automática"</strong> para obter:</p>
+        <ul>
+            <li>Avaliação de frequência e ritmo</li>
+            <li>Medição de intervalos (PR, QRS, QT)</li>
+            <li>Cálculo do eixo cardíaco</li>
+            <li>Análise do segmento ST</li>
+            <li>Interpretação das ondas T</li>
+            <li>Diagnóstico geral com alertas</li>
+        </ul>
+        
+        <h3>4. Exportar</h3>
+        <ul>
+            <li><strong>Export as PDF:</strong> Documento vetorial de alta qualidade</li>
+            <li><strong>Export as JPG:</strong> Imagem para apresentações</li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>⌨️ Atalhos de Teclado</h2>
+        <p>
+            <span class="shortcut">Ctrl+Z</span> Desfazer última alteração<br>
+            <span class="shortcut">Ctrl+S</span> Exportar para PDF<br>
+            <span class="shortcut">Ctrl+R</span> Resetar para padrões<br>
+            <span class="shortcut">Ctrl+A</span> Executar análise automática
+        </p>
+    </div>
+    
+    <div class="feature-box">
+        <h2>📚 Casos de Uso Educacional</h2>
+        
+        <h3>Para Professores:</h3>
+        <ul>
+            <li>Criar ECGs personalizados para aulas e provas</li>
+            <li>Demonstrar progressão de patologias</li>
+            <li>Comparar padrões normais vs. anormais</li>
+            <li>Exportar para slides e materiais didáticos</li>
+        </ul>
+        
+        <h3>Para Estudantes:</h3>
+        <ul>
+            <li>Praticar interpretação de ECG</li>
+            <li>Visualizar efeitos de diferentes parâmetros</li>
+            <li>Estudar arritmias e bloqueios</li>
+            <li>Usar análise automática para verificar conhecimento</li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>🔬 Detalhes Técnicos</h2>
+        
+        <h3>Modelo Matemático</h3>
+        <p>O ECG é gerado usando <strong>soma de funções Gaussianas</strong> para cada componente da onda:</p>
+        <code>V(t) = Σ A_i × exp(-((t - μ_i)² / (2σ_i²)))</code>
+        
+        <h3>Derivações</h3>
+        <ul>
+            <li><strong>Membros:</strong> D1, D2, D3 (Triângulo de Einthoven)</li>
+            <li><strong>Aumentadas:</strong> aVR, aVL, aVF (Equações de Goldberger)</li>
+            <li><strong>Precordiais:</strong> V1-V6 (Projeção vetorial 3D)</li>
+        </ul>
+        
+        <h3>Precisão Médica</h3>
+        <ul>
+            <li>Velocidade do papel: 25 mm/s</li>
+            <li>Calibração de amplitude: 10 mm/mV</li>
+            <li>Caixas pequenas: 1mm × 1mm = 0.04s × 0.1mV</li>
+            <li>Caixas grandes: 5mm × 5mm = 0.2s × 0.5mV</li>
+            <li>Taxa de amostragem: 500 Hz</li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>💡 Dicas e Truques</h2>
+        <ul>
+            <li>O <strong>BPM Calculado</strong> mostra a frequência real detectada no ECG gerado</li>
+            <li>Combine arritmias + patologias para casos complexos</li>
+            <li>Use templates como ponto de partida e ajuste conforme necessário</li>
+            <li>A análise automática é baseada em guidelines AHA/ESC</li>
+            <li>Abra o Console do navegador (<code>F12</code>) para acessar <code>debugECG</code></li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>🐛 Debug Console</h2>
+        <p>Abra o console do navegador (F12) e use:</p>
+        <code>
+            debugECG.getState() // Ver estado atual<br>
+            debugECG.analyze() // Executar análise<br>
+            debugECG.templates // Listar templates<br>
+            debugECG.loadTemplate('afib') // Carregar template
+        </code>
+    </div>
+    
+    <div class="feature-box">
+        <h2>📖 Exemplos de Padrões</h2>
+        
+        <h3>IAM Anterior (STEMI)</h3>
+        <ul>
+            <li>Supradesnivelamento de ST em V1-V4</li>
+            <li>Infradesnivelamento recíproco em D2, D3, aVF</li>
+            <li>Possíveis ondas Q patológicas</li>
+        </ul>
+        
+        <h3>Fibrilação Atrial</h3>
+        <ul>
+            <li>Ausência de ondas P</li>
+            <li>Intervalos RR irregularmente irregulares</li>
+            <li>Ondas fibrilatórias na linha de base</li>
+        </ul>
+        
+        <h3>BCRE (LBBB)</h3>
+        <ul>
+            <li>QRS > 120ms</li>
+            <li>Onda R monofásica larga em V5, V6, D1</li>
+            <li>Ausência de Q em V5, V6</li>
+            <li>Padrão de sobrecarga (strain)</li>
+        </ul>
+    </div>
+    
+    <div class="feature-box">
+        <h2>🎓 Recursos Adicionais</h2>
+        <p>Para aprender mais sobre interpretação de ECG:</p>
+        <ul>
+            <li>AHA/ACC Guidelines for ECG Interpretation</li>
+            <li>ESC Guidelines on Cardiac Pacing</li>
+            <li>Livro: "ECG Made Easy" - Hampton</li>
+            <li>Livro: "The Only EKG Book You'll Ever Need" - Thaler</li>
+        </ul>
+    </div>
+    
+    <footer style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #ddd; color: #666;">
+        <p><strong>ECG Builder v1.0.0</strong></p>
+        <p>Desenvolvido para educação médica | Dezembro 2025</p>
+        <a href="index.html" class="btn">🚀 Começar Agora</a>
+    </footer>
+</body>
+</html>

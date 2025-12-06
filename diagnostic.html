@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Builder Diagnostic</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .pass { background: #d4edda; border-color: #c3e6cb; }
+        .fail { background: #f8d7da; border-color: #f5c6cb; }
+        .info { background: #d1ecf1; border-color: #bee5eb; }
+        h2 { color: #333; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔬 ECG Builder Diagnostic Tool</h1>
+    
+    <div id="tests"></div>
+    
+    <script>
+        const testsDiv = document.getElementById('tests');
+        const results = [];
+        
+        function addTest(name, passed, message = '') {
+            results.push({ name, passed, message });
+            const div = document.createElement('div');
+            div.className = `test ${passed ? 'pass' : 'fail'}`;
+            div.innerHTML = `
+                <h3>${passed ? '✅' : '❌'} ${name}</h3>
+                ${message ? `<p>${message}</p>` : ''}
+            `;
+            testsDiv.appendChild(div);
+        }
+        
+        function addInfo(title, content) {
+            const div = document.createElement('div');
+            div.className = 'test info';
+            div.innerHTML = `
+                <h3>ℹ️ ${title}</h3>
+                <pre>${content}</pre>
+            `;
+            testsDiv.appendChild(div);
+        }
+        
+        // Test 1: D3.js loaded
+        addTest('D3.js Library', typeof d3 !== 'undefined', 
+            typeof d3 !== 'undefined' ? `Version: ${d3.version}` : 'D3.js failed to load');
+        
+        // Load all scripts
+        const scripts = [
+            'src/utils/constants.js',
+            'src/utils/state-manager.js',
+            'src/core/ecg-generator.js',
+            'src/core/lead-calculator.js',
+            'src/core/grid-renderer.js',
+            'src/models/arrhythmias.js',
+            'src/models/pathologies.js',
+            'src/components/parameter-panel.js',
+            'src/components/ecg-canvas.js',
+            'src/components/export-manager.js',
+            'src/components/analysis-engine.js',
+            'src/components/templates.js',
+            'src/app.js'
+        ];
+        
+        let loadedScripts = 0;
+        const errors = [];
+        
+        scripts.forEach(src => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = () => {
+                loadedScripts++;
+                checkComplete();
+            };
+            script.onerror = (e) => {
+                errors.push(`Failed to load: ${src}`);
+                loadedScripts++;
+                checkComplete();
+            };
+            document.body.appendChild(script);
+        });
+        
+        function checkComplete() {
+            if (loadedScripts === scripts.length) {
+                runTests();
+            }
+        }
+        
+        function runTests() {
+            // Test 2: Scripts loaded
+            addTest('All Scripts Loaded', errors.length === 0, 
+                errors.length === 0 ? 'All 13 scripts loaded successfully' : errors.join('<br>'));
+            
+            // Test 3: Constants defined
+            addTest('MEDICAL_CONSTANTS', typeof MEDICAL_CONSTANTS !== 'undefined');
+            
+            // Test 4: State Manager
+            addTest('State Manager', typeof stateManager !== 'undefined');
+            
+            // Test 5: ECG Generator
+            addTest('ECG Generator', typeof ecgGenerator !== 'undefined');
+            
+            // Test 6: Lead Calculator
+            addTest('Lead Calculator', typeof leadCalculator !== 'undefined');
+            
+            // Test 7: Grid Renderer
+            addTest('Grid Renderer', typeof gridRenderer !== 'undefined');
+            
+            // Test 8: ECG Canvas
+            addTest('ECG Canvas', typeof ecgCanvas !== 'undefined');
+            
+            // Test 9: Try to generate ECG
+            try {
+                const params = stateManager.getParameters();
+                const signal = ecgGenerator.generateECG(params, 2.5);
+                addTest('ECG Generation', signal && signal.data && signal.data.length > 0,
+                    `Generated ${signal.data.length} data points`);
+            } catch (e) {
+                addTest('ECG Generation', false, `Error: ${e.message}`);
+                addInfo('Error Stack', e.stack);
+            }
+            
+            // Test 10: Try to calculate leads
+            try {
+                const params = stateManager.getParameters();
+                const baseSignal = ecgGenerator.generateECG(params, 2.5);
+                const allLeads = leadCalculator.calculateAll12Leads(baseSignal, params);
+                addTest('Lead Calculation', allLeads && Object.keys(allLeads).length === 12,
+                    `Calculated ${Object.keys(allLeads).length} leads`);
+                
+                if (allLeads) {
+                    addInfo('Available Leads', Object.keys(allLeads).join(', '));
+                }
+            } catch (e) {
+                addTest('Lead Calculation', false, `Error: ${e.message}`);
+                addInfo('Error Stack', e.stack);
+            }
+            
+            // Test 11: Check for drawContinuousGrid
+            try {
+                const hasMethod = typeof gridRenderer.drawContinuousGrid === 'function';
+                addTest('drawContinuousGrid Method', hasMethod);
+            } catch (e) {
+                addTest('drawContinuousGrid Method', false, `Error: ${e.message}`);
+            }
+            
+            // Test 12: Try to render (requires DOM element)
+            const testDiv = document.createElement('div');
+            testDiv.id = 'test-canvas';
+            testDiv.style.width = '800px';
+            testDiv.style.height = '600px';
+            document.body.appendChild(testDiv);
+            
+            try {
+                const testRenderer = new ECGGridRenderer('test-canvas');
+                testRenderer.initialize();
+                addTest('Grid Renderer Initialization', testRenderer.svg !== null);
+                
+                // Try rendering continuous grid
+                try {
+                    testRenderer.drawContinuousGrid(800, 600);
+                    addTest('Continuous Grid Rendering', true, 'Grid rendered successfully');
+                } catch (e) {
+                    addTest('Continuous Grid Rendering', false, `Error: ${e.message}`);
+                    addInfo('Grid Error Stack', e.stack);
+                }
+            } catch (e) {
+                addTest('Grid Renderer Initialization', false, `Error: ${e.message}`);
+                addInfo('Init Error Stack', e.stack);
+            }
+            
+            // Summary
+            const passed = results.filter(r => r.passed).length;
+            const total = results.length;
+            const summaryDiv = document.createElement('div');
+            summaryDiv.className = `test ${passed === total ? 'pass' : 'fail'}`;
+            summaryDiv.innerHTML = `
+                <h2>📊 Summary: ${passed}/${total} tests passed</h2>
+            `;
+            testsDiv.insertBefore(summaryDiv, testsDiv.firstChild);
+        }
+    </script>
+</body>
+</html>

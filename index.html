@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eletro Generator - Alpha Test 1.0</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="styles/ecg-builder.css">
+</head>
+<body>
+    <header class="app-header">
+        <div class="title-container">
+            <h1>Eletro Generator</h1>
+            <span class="version-badge">Alpha Test 1.0</span>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Left Panel - Parameters -->
+        <aside class="parameter-panel">
+            <section class="param-section">
+                <h3>Frequência Cardíaca</h3>
+                <div class="param-control">
+                    <input type="number" id="heart-rate" min="30" max="200" value="76" step="1">
+                    <span class="unit">bpm</span>
+                </div>
+                <div class="calculated-bpm">
+                    <small>BPM Calculado: <span id="calculated-bpm">76</span></small>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Largura P</h3>
+                <div class="param-control">
+                    <input type="number" id="p-width" min="0.04" max="0.20" value="0.12" step="0.01">
+                    <span class="unit">s</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Intervalo QT</h3>
+                <div class="param-control">
+                    <input type="number" id="qt-interval" min="0.20" max="0.60" value="0.15" step="0.01">
+                    <span class="unit">s</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Amplitude ST</h3>
+                <div class="param-control">
+                    <input type="number" id="st-amplitude" min="-0.5" max="0.5" value="0.15" step="0.01">
+                    <span class="unit">mV</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Intervalo P-R</h3>
+                <div class="param-control">
+                    <input type="number" id="pr-interval" min="0.08" max="0.30" value="0.12" step="0.01">
+                    <span class="unit">s</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Amplitude T</h3>
+                <div class="param-control">
+                    <input type="number" id="t-amplitude" min="0.05" max="1.0" value="0.15" step="0.01">
+                    <span class="unit">mV</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Nivelamento PR</h3>
+                <div class="param-control">
+                    <input type="number" id="pr-level" min="-0.2" max="0.2" value="0.12" step="0.01">
+                    <span class="unit">mV</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Amplitude onda U</h3>
+                <div class="param-control">
+                    <input type="number" id="u-amplitude" min="0" max="0.3" value="0.15" step="0.01">
+                    <span class="unit">mV</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Largura QRS</h3>
+                <div class="param-control">
+                    <input type="number" id="qrs-width" min="0.06" max="0.18" value="0.175" step="0.005">
+                    <span class="unit">s</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Amplitude QRS</h3>
+                <div class="param-control">
+                    <input type="number" id="qrs-amplitude" min="0.5" max="3.0" value="10" step="0.1">
+                    <span class="unit">mV</span>
+                </div>
+            </section>
+
+            <section class="param-section">
+                <h3>Arritmias</h3>
+                <select id="arrhythmia-select" class="param-select">
+                    <option value="none">Taquicardia Sinusal</option>
+                    <option value="sinus-brady">Bradicardia Sinusal</option>
+                    <option value="afib">Fibrilação Atrial</option>
+                    <option value="aflutter">Flutter Atrial</option>
+                    <option value="vt">Taquicardia Ventricular</option>
+                    <option value="avblock-1">Bloqueio AV 1º grau</option>
+                    <option value="avblock-2-mobitz1">Bloqueio AV 2º grau Mobitz I</option>
+                    <option value="avblock-2-mobitz2">Bloqueio AV 2º grau Mobitz II</option>
+                </select>
+            </section>
+
+            <section class="param-section">
+                <h3>Bloqueios de Ramo</h3>
+                <select id="bundle-block-select" class="param-select">
+                    <option value="none">Ausente</option>
+                    <option value="rbbb">BCRD (Bloqueio Completo Ramo Direito)</option>
+                    <option value="lbbb">BCRE (Bloqueio Completo Ramo Esquerdo)</option>
+                    <option value="lafb">HASAE (Hemibloqueio Anterossuperior Esquerdo)</option>
+                    <option value="lpfb">HPSPE (Hemibloqueio Posterosuperior Esquerdo)</option>
+                </select>
+            </section>
+
+            <section class="param-section">
+                <h3>Patologias</h3>
+                <select id="pathology-select" class="param-select">
+                    <option value="none">IAM com Supra de ST</option>
+                    <option value="stemi-anterior">IAM Anterior</option>
+                    <option value="stemi-inferior">IAM Inferior</option>
+                    <option value="stemi-lateral">IAM Lateral</option>
+                    <option value="stemi-posterior">IAM Posterior</option>
+                    <option value="nstemi">IAM sem Supra de ST</option>
+                    <option value="lvh">Hipertrofia Ventricular Esquerda</option>
+                    <option value="rvh">Hipertrofia Ventricular Direita</option>
+                    <option value="pericarditis">Pericardite</option>
+                    <option value="hyperkalemia">Hipercalemia</option>
+                    <option value="hypokalemia">Hipocalemia</option>
+                </select>
+            </section>
+
+            <section class="param-section">
+                <h3>Marca passo e Holter</h3>
+                <select id="pacemaker-select" class="param-select">
+                    <option value="none">Ausente</option>
+                    <option value="aai">Marca-passo AAI</option>
+                    <option value="vvi">Marca-passo VVI</option>
+                    <option value="ddd">Marca-passo DDD</option>
+                </select>
+            </section>
+
+            <div class="template-section">
+                <h3>Templates</h3>
+                <button class="template-btn" data-template="normal">ECG Normal</button>
+                <button class="template-btn" data-template="stemi-anterior">IAM Anterior</button>
+                <button class="template-btn" data-template="afib">Fibrilação Atrial</button>
+                <button class="template-btn" data-template="lbbb">BCRE</button>
+                <button class="template-btn" data-template="lvh">HVE</button>
+            </div>
+        </aside>
+
+        <!-- Main Panel - ECG Canvas -->
+        <section class="ecg-canvas-container">
+            <div id="ecg-canvas"></div>
+            
+            <!-- Analysis Panel (Hidden by default) -->
+            <div id="analysis-panel" class="analysis-panel hidden">
+                <h3>📊 Análise Automática do ECG</h3>
+                <div id="analysis-results"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="src/utils/constants.js"></script>
+    <script src="src/utils/state-manager.js"></script>
+    <script src="src/core/ecg-generator.js"></script>
+    <script src="src/core/lead-calculator.js"></script>
+    <script src="src/core/grid-renderer.js"></script>
+    <script src="src/models/arrhythmias.js"></script>
+    <script src="src/models/pathologies.js"></script>
+    <script src="src/components/parameter-panel.js"></script>
+    <script src="src/components/ecg-canvas.js"></script>
+    <script src="src/components/export-manager.js"></script>
+    <script src="src/components/analysis-engine.js"></script>
+    <script src="src/components/templates.js"></script>
+    <script src="src/app.js"></script>
+</body>
+</html>
