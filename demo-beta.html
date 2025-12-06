@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Generator BETA - ACLS Rhythms Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .beta-badge {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            color: #856404;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        
+        .control-group {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .control-group h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .pattern-btn {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .pattern-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .pattern-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .critical {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        
+        .critical:hover {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .info-box h4 {
+            color: #1976D2;
+            margin-bottom: 5px;
+        }
+        
+        .canvas-area {
+            padding: 30px;
+            background: white;
+        }
+        
+        #ecg-display {
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            min-height: 600px;
+            background: #fff;
+            padding: 20px;
+        }
+        
+        .pattern-info {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .pattern-info.active {
+            display: block;
+        }
+        
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .feature-list li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .footer {
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ECG Generator <span class="beta-badge">BETA v2.0</span></h1>
+            <p>Advanced Cardiac Life Support (ACLS) Rhythms & Enhanced Pathologies</p>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ BETA VERSION - Educational Use Only</h3>
+            <p>This beta version includes experimental features with enhanced realism based on AHA ACLS guidelines. 
+            <strong>NOT for clinical use or patient care.</strong> All patterns have been designed based on medical 
+            literature but should be validated by medical professionals before use in formal education.</p>
+        </div>
+        
+        <div class="controls">
+            <!-- ACLS Critical Rhythms -->
+            <div class="control-group">
+                <h3>🚑 ACLS Critical Rhythms (NEW)</h3>
+                <button class="pattern-btn critical" onclick="showPattern('vfib-coarse')">
+                    Ventricular Fibrillation (Coarse)
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('vfib-fine')">
+                    Ventricular Fibrillation (Fine)
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('pulseless-vt')">
+                    Pulseless Ventricular Tachycardia
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('pea')">
+                    Pulseless Electrical Activity (PEA)
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('asystole')">
+                    Asystole
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('complete-heart-block')">
+                    Complete Heart Block (3rd Degree)
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('torsades')">
+                    Torsades de Pointes
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('agonal')">
+                    Agonal Rhythm
+                </button>
+            </div>
+            
+            <!-- Enhanced STEMI -->
+            <div class="control-group">
+                <h3>🫀 Enhanced STEMI Patterns</h3>
+                <button class="pattern-btn" onclick="showPattern('stemi-anterior-acute')">
+                    Anterior STEMI (Hyperacute)
+                </button>
+                <button class="pattern-btn" onclick="showPattern('stemi-anterior-evolved')">
+                    Anterior STEMI (Evolved with Q waves)
+                </button>
+                <button class="pattern-btn" onclick="showPattern('stemi-inferior')">
+                    Inferior STEMI
+                </button>
+                <button class="pattern-btn" onclick="showPattern('stemi-lateral')">
+                    Lateral STEMI
+                </button>
+                <button class="pattern-btn" onclick="showPattern('stemi-posterior')">
+                    Posterior STEMI
+                </button>
+            </div>
+            
+            <!-- Electrolyte Abnormalities -->
+            <div class="control-group">
+                <h3>💊 Electrolyte Abnormalities (NEW)</h3>
+                <button class="pattern-btn" onclick="showPattern('hyperkalemia-mild')">
+                    Hyperkalemia (Mild) - K+ 5.5-6.5
+                </button>
+                <button class="pattern-btn" onclick="showPattern('hyperkalemia-moderate')">
+                    Hyperkalemia (Moderate) - K+ 6.5-8.0
+                </button>
+                <button class="pattern-btn critical" onclick="showPattern('hyperkalemia-severe')">
+                    Hyperkalemia (Severe) - K+ >8.0
+                </button>
+                <button class="pattern-btn" onclick="showPattern('hypokalemia-mild')">
+                    Hypokalemia (Mild) - K+ 3.0-3.5
+                </button>
+                <button class="pattern-btn" onclick="showPattern('hypokalemia-moderate')">
+                    Hypokalemia (Moderate) - K+ 2.5-3.0
+                </button>
+                <button class="pattern-btn" onclick="showPattern('hypokalemia-severe')">
+                    Hypokalemia (Severe) - K+ <2.5
+                </button>
+            </div>
+            
+            <!-- Other Pathologies -->
+            <div class="control-group">
+                <h3>🔥 Other Enhanced Pathologies</h3>
+                <button class="pattern-btn" onclick="showPattern('pericarditis')">
+                    Pericarditis (PR depression)
+                </button>
+                <button class="pattern-btn" onclick="showPattern('rbbb')">
+                    RBBB (Improved RSR' pattern)
+                </button>
+                <button class="pattern-btn" onclick="showPattern('lbbb')">
+                    LBBB (Improved morphology)
+                </button>
+            </div>
+        </div>
+        
+        <div class="canvas-area">
+            <h2 style="color: #667eea; margin-bottom: 20px;">ECG Display</h2>
+            <div id="ecg-display">
+                <p style="text-align: center; color: #6c757d; padding: 100px 20px;">
+                    Select a pattern from the controls above to generate an ECG
+                </p>
+            </div>
+        </div>
+        
+        <!-- Pattern Information Panels -->
+        <div id="pattern-info-container"></div>
+        
+        <div class="footer">
+            <h3>New Features in Beta v2.0</h3>
+            <div class="controls">
+                <div class="control-group">
+                    <h3>Enhanced Realism</h3>
+                    <ul class="feature-list">
+                        <li>Asymmetric T waves (steeper upslope)</li>
+                        <li>Heart rate variability</li>
+                        <li>Improved QRS morphology</li>
+                        <li>Realistic baseline wander</li>
+                        <li>Powerline interference (60Hz)</li>
+                        <li>Better ST segment transitions</li>
+                    </ul>
+                </div>
+                <div class="control-group">
+                    <h3>New Pathologies</h3>
+                    <ul class="feature-list">
+                        <li>7 ACLS critical rhythms</li>
+                        <li>Hyperkalemia (3 severities)</li>
+                        <li>Hypokalemia (3 severities)</li>
+                        <li>Pericarditis with PR depression</li>
+                        <li>Enhanced STEMI (hyperacute T)</li>
+                        <li>Improved bundle blocks</li>
+                    </ul>
+                </div>
+                <div class="control-group">
+                    <h3>Medical References</h3>
+                    <ul class="feature-list">
+                        <li>AHA ACLS Guidelines 2020</li>
+                        <li>ACC/AHA STEMI Guidelines</li>
+                        <li>Dubin's ECG Interpretation</li>
+                        <li>Braunwald's Heart Disease</li>
+                        <li>PhysioNet ECG Database</li>
+                        <li>Medical journal validation</li>
+                    </ul>
+                </div>
+            </div>
+            <p style="margin-top: 20px;">
+                <strong>Documentation:</strong> 
+                <a href="src-beta/README.md" style="color: #17a2b8;">Beta README</a> | 
+                <a href="src-beta/VALIDATION.md" style="color: #17a2b8;">Medical Validation</a> | 
+                <a href="src-beta/COMPARISON.md" style="color: #17a2b8;">Feature Comparison</a> | 
+                <a href="src-beta/QUICK_REFERENCE.md" style="color: #17a2b8;">Quick Reference</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">
+                Version 2.0.0-beta | December 2025 | For Educational Use Only
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Pattern definitions with clinical information
+        const patternInfo = {
+            'vfib-coarse': {
+                name: 'Ventricular Fibrillation (Coarse)',
+                category: 'ACLS - Shockable',
+                features: [
+                    'Chaotic irregular waveform',
+                    'Amplitude > 0.3 mV (3mm)',
+                    'No discernible P, QRS, or T waves',
+                    'Rate: Indeterminate'
+                ],
+                clinical: 'Immediate CPR and defibrillation required. More likely to respond to shock than fine VFib.',
+                treatment: 'Defibrillation → CPR → Epinephrine → Amiodarone'
+            },
+            'vfib-fine': {
+                name: 'Ventricular Fibrillation (Fine)',
+                category: 'ACLS - Shockable',
+                features: [
+                    'Chaotic irregular waveform',
+                    'Amplitude < 0.2 mV (2mm)',
+                    'May resemble asystole',
+                    'Confirm on multiple leads'
+                ],
+                clinical: 'Less likely to respond to defibrillation. May need epinephrine first to coarsen.',
+                treatment: 'CPR → Epinephrine → Defibrillation'
+            },
+            'pulseless-vt': {
+                name: 'Pulseless Ventricular Tachycardia',
+                category: 'ACLS - Shockable',
+                features: [
+                    'Rate: 180-220 bpm',
+                    'Wide QRS > 160ms',
+                    'Regular rhythm',
+                    'No pulse despite organized rhythm'
+                ],
+                clinical: 'Treat same as VFib - immediate defibrillation.',
+                treatment: 'Defibrillation → CPR → Epinephrine → Amiodarone'
+            },
+            'pea': {
+                name: 'Pulseless Electrical Activity',
+                category: 'ACLS - Non-Shockable',
+                features: [
+                    'Organized electrical activity',
+                    'No palpable pulse',
+                    'Usually wide QRS',
+                    'Rate typically 40-60 bpm'
+                ],
+                clinical: 'Find and treat reversible causes (H\'s and T\'s). Continue CPR.',
+                treatment: 'CPR → Epinephrine → Treat cause (hypovolemia, tension pneumo, etc.)'
+            },
+            'asystole': {
+                name: 'Asystole',
+                category: 'ACLS - Non-Shockable',
+                features: [
+                    'Flat line',
+                    'No electrical activity',
+                    'Confirm on multiple leads',
+                    'Check connections and gain'
+                ],
+                clinical: 'Worst prognosis. Confirm not a loose lead. Usually terminal rhythm.',
+                treatment: 'CPR → Epinephrine → Treat reversible causes'
+            },
+            'complete-heart-block': {
+                name: 'Complete Heart Block (3rd Degree)',
+                category: 'Bradycardia/Block',
+                features: [
+                    'Complete AV dissociation',
+                    'P waves: 75 bpm (independent)',
+                    'QRS: 35 bpm (escape rhythm)',
+                    'Wide QRS (ventricular escape)'
+                ],
+                clinical: 'May need temporary then permanent pacemaker. Risk of syncope.',
+                treatment: 'Transcutaneous pacing → Permanent pacemaker'
+            },
+            'torsades': {
+                name: 'Torsades de Pointes',
+                category: 'Polymorphic VT',
+                features: [
+                    'Rate: 200-250 bpm',
+                    'QRS "twists" around baseline',
+                    'Varying amplitude and axis',
+                    'Associated with long QT'
+                ],
+                clinical: 'Can degenerate into VFib. Associated with QT prolongation.',
+                treatment: 'Magnesium sulfate 2g IV → Defibrillation if pulseless'
+            },
+            'agonal': {
+                name: 'Agonal Rhythm',
+                category: 'Pre-terminal',
+                features: [
+                    'Very slow rate < 20 bpm',
+                    'Wide, bizarre QRS',
+                    'Very irregular',
+                    'Usually pre-terminal'
+                ],
+                clinical: 'Dying heart rhythm. Very poor prognosis.',
+                treatment: 'Aggressive resuscitation, rarely successful'
+            },
+            'hyperkalemia-severe': {
+                name: 'Severe Hyperkalemia',
+                category: 'Electrolyte - EMERGENCY',
+                features: [
+                    'Potassium > 8.0 mEq/L',
+                    'Sine wave pattern',
+                    'Very wide QRS > 200ms',
+                    'Absent P waves'
+                ],
+                clinical: 'LIFE THREATENING. Risk of asystole. Immediate treatment required.',
+                treatment: 'Calcium gluconate → Insulin + Glucose → Dialysis'
+            },
+            'stemi-anterior-acute': {
+                name: 'Acute Anterior STEMI',
+                category: 'Acute Coronary Syndrome',
+                features: [
+                    'ST elevation in V1-V4 (>2mm)',
+                    'Hyperacute peaked T waves',
+                    'Reciprocal ST depression in II, III, aVF',
+                    'Convex (tombstone) ST morphology'
+                ],
+                clinical: 'LAD occlusion. Time is muscle. Door-to-balloon < 90 minutes.',
+                treatment: 'Aspirin → Antiplatelet → PCI or Fibrinolysis'
+            }
+        };
+        
+        function showPattern(patternId) {
+            // Highlight active button
+            document.querySelectorAll('.pattern-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Display pattern info
+            const info = patternInfo[patternId];
+            if (info) {
+                displayPatternInfo(info);
+            }
+            
+            // Display ECG (placeholder - would integrate with actual generator)
+            const display = document.getElementById('ecg-display');
+            display.innerHTML = `
+                <div class="info-box">
+                    <h4>${info ? info.name : patternId}</h4>
+                    <p><strong>Category:</strong> ${info ? info.category : 'N/A'}</p>
+                </div>
+                <p style="text-align: center; padding: 50px; color: #6c757d;">
+                    <strong>Pattern: ${patternId}</strong><br><br>
+                    ECG visualization would appear here when integrated with the full beta generator.<br>
+                    See documentation for implementation details.
+                </p>
+            `;
+        }
+        
+        function displayPatternInfo(info) {
+            const container = document.getElementById('pattern-info-container');
+            container.innerHTML = `
+                <div class="pattern-info active" style="margin: 20px;">
+                    <h2 style="color: #667eea;">${info.name}</h2>
+                    <p><strong>Category:</strong> ${info.category}</p>
+                    
+                    <h3 style="margin-top: 20px; color: #667eea;">Key Features:</h3>
+                    <ul class="feature-list">
+                        ${info.features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                    
+                    <div class="info-box">
+                        <h4>Clinical Significance</h4>
+                        <p>${info.clinical}</p>
+                    </div>
+                    
+                    <div class="info-box" style="background: #fff3cd; border-left-color: #ffc107;">
+                        <h4 style="color: #856404;">Treatment Algorithm</h4>
+                        <p style="color: #856404;">${info.treatment}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
