@@ -2,6 +2,9 @@
 // Based on American Heart Association Advanced Cardiac Life Support Guidelines
 // These are the life-threatening rhythms that ACLS providers must recognize
 
+// DEPENDENCIES: This module requires ecg-generator-beta.js to be loaded first
+// The ecgGeneratorBeta object is created as a global when ecg-generator-beta.js loads
+
 const ACLSRhythms = {
     /**
      * Ventricular Fibrillation (VFib)

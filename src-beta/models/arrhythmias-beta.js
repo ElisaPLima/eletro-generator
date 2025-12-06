@@ -1,6 +1,9 @@
 // Enhanced Arrhythmia Pattern Modifiers - Beta Version
 // Improved realism and accuracy for common arrhythmias
 
+// DEPENDENCIES: This module requires ecg-generator-beta.js to be loaded first
+// The ecgGeneratorBeta object is created as a global when ecg-generator-beta.js loads
+
 const ArrhythmiaModifiersBeta = {
     /**
      * Enhanced Atrial Fibrillation
