@@ -14,6 +14,9 @@
             <h1>Eletro Generator</h1>
             <span class="version-badge">Alpha Test 1.0</span>
         </div>
+        <div class="credits">
+            <small>Projeto de Elisa Patiño Lima - <a href="mailto:elisapatinolima@gmail.com" style="color: white; text-decoration: none;">elisapatinolima@gmail.com</a></small>
+        </div>
     </header>
 
     <main class="app-container">
@@ -105,14 +108,14 @@
             <section class="param-section">
                 <h3>Arritmias</h3>
                 <select id="arrhythmia-select" class="param-select">
-                    <option value="none">Taquicardia Sinusal</option>
-                    <option value="sinus-brady">Bradicardia Sinusal</option>
-                    <option value="afib">Fibrilação Atrial</option>
-                    <option value="aflutter">Flutter Atrial</option>
-                    <option value="vt">Taquicardia Ventricular</option>
-                    <option value="avblock-1">Bloqueio AV 1º grau</option>
-                    <option value="avblock-2-mobitz1">Bloqueio AV 2º grau Mobitz I</option>
-                    <option value="avblock-2-mobitz2">Bloqueio AV 2º grau Mobitz II</option>
+                    <option value="none">Ausente</option>
+                    <option value="sinus-brady" disabled>Em desenvolvimento</option>
+                    <option value="afib" disabled>Em desenvolvimento</option>
+                    <option value="aflutter" disabled>Em desenvolvimento</option>
+                    <option value="vt" disabled>Em desenvolvimento</option>
+                    <option value="avblock-1" disabled>Em desenvolvimento</option>
+                    <option value="avblock-2-mobitz1" disabled>Em desenvolvimento</option>
+                    <option value="avblock-2-mobitz2" disabled>Em desenvolvimento</option>
                 </select>
             </section>
 
@@ -120,27 +123,27 @@
                 <h3>Bloqueios de Ramo</h3>
                 <select id="bundle-block-select" class="param-select">
                     <option value="none">Ausente</option>
-                    <option value="rbbb">BCRD (Bloqueio Completo Ramo Direito)</option>
-                    <option value="lbbb">BCRE (Bloqueio Completo Ramo Esquerdo)</option>
-                    <option value="lafb">HASAE (Hemibloqueio Anterossuperior Esquerdo)</option>
-                    <option value="lpfb">HPSPE (Hemibloqueio Posterosuperior Esquerdo)</option>
+                    <option value="rbbb" disabled>Em desenvolvimento</option>
+                    <option value="lbbb" disabled>Em desenvolvimento</option>
+                    <option value="lafb" disabled>Em desenvolvimento</option>
+                    <option value="lpfb" disabled>Em desenvolvimento</option>
                 </select>
             </section>
 
             <section class="param-section">
                 <h3>Patologias</h3>
                 <select id="pathology-select" class="param-select">
-                    <option value="none">IAM com Supra de ST</option>
-                    <option value="stemi-anterior">IAM Anterior</option>
-                    <option value="stemi-inferior">IAM Inferior</option>
-                    <option value="stemi-lateral">IAM Lateral</option>
-                    <option value="stemi-posterior">IAM Posterior</option>
-                    <option value="nstemi">IAM sem Supra de ST</option>
-                    <option value="lvh">Hipertrofia Ventricular Esquerda</option>
-                    <option value="rvh">Hipertrofia Ventricular Direita</option>
-                    <option value="pericarditis">Pericardite</option>
-                    <option value="hyperkalemia">Hipercalemia</option>
-                    <option value="hypokalemia">Hipocalemia</option>
+                    <option value="none">Ausente</option>
+                    <option value="stemi-anterior" disabled>Em desenvolvimento</option>
+                    <option value="stemi-inferior" disabled>Em desenvolvimento</option>
+                    <option value="stemi-lateral" disabled>Em desenvolvimento</option>
+                    <option value="stemi-posterior" disabled>Em desenvolvimento</option>
+                    <option value="nstemi" disabled>Em desenvolvimento</option>
+                    <option value="lvh" disabled>Em desenvolvimento</option>
+                    <option value="rvh" disabled>Em desenvolvimento</option>
+                    <option value="pericarditis" disabled>Em desenvolvimento</option>
+                    <option value="hyperkalemia" disabled>Em desenvolvimento</option>
+                    <option value="hypokalemia" disabled>Em desenvolvimento</option>
                 </select>
             </section>
 
@@ -148,19 +151,16 @@
                 <h3>Marca passo e Holter</h3>
                 <select id="pacemaker-select" class="param-select">
                     <option value="none">Ausente</option>
-                    <option value="aai">Marca-passo AAI</option>
-                    <option value="vvi">Marca-passo VVI</option>
-                    <option value="ddd">Marca-passo DDD</option>
+                    <option value="aai" disabled>Em desenvolvimento</option>
+                    <option value="vvi" disabled>Em desenvolvimento</option>
+                    <option value="ddd" disabled>Em desenvolvimento</option>
                 </select>
             </section>
 
             <div class="template-section">
                 <h3>Templates</h3>
                 <button class="template-btn" data-template="normal">ECG Normal</button>
-                <button class="template-btn" data-template="stemi-anterior">IAM Anterior</button>
-                <button class="template-btn" data-template="afib">Fibrilação Atrial</button>
-                <button class="template-btn" data-template="lbbb">BCRE</button>
-                <button class="template-btn" data-template="lvh">HVE</button>
+                <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem; font-style: italic;">Outros templates em desenvolvimento</p>
             </div>
         </aside>
 
